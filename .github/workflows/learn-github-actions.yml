@@ -1,13 +1,24 @@
-name: learn-github-actions
-run-name: ${{github.actor}} is learning Github Actions
-on: [push]
+name: Check Branch Name
+
+on:
+  push:
+    branches-ignore:
+      - "main"
+      - "develop"
+
 jobs:
-  check-bats-version:
+  validate-branch-name:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-      - run: npm install -g bats
-      - run: bats -v
+      - name: Check branch name format
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          PATTERN="^(feature|feat|release|hotfix|bugfix|test|chore)\/[a-z0-9-]+$"
+
+          if [[ ! "$BRANCH_NAME" =~ $PATTERN ]]; then
+            echo "❌ ERROR: La rama '$BRANCH_NAME' no sigue el estándar de nombres."
+            echo "Formatos válidos: feat/mi-rama, hotfix/v1.0.1, chore/update-deps, etc."
+            exit 1
+          else
+            echo "✅ Nombre de rama válido."
+          fi

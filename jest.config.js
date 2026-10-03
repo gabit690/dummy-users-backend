@@ -11,4 +11,19 @@ export default {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
+  projects: [
+    {
+      displayName: "unit",
+      preset: "ts-jest",
+      testEnvironment: "node",
+      testMatch: ["<rootDir>/src/**/*.test.ts"],
+      testPathIgnorePatterns: ["/node_modules/", "\\.int\\.test\\.ts$"],
+    },
+    {
+      displayName: "integration",
+      preset: "ts-jest",
+      testEnvironment: "node",
+      testMatch: ["<rootDir>/src/**/*.int.test.ts"],
+    },
+  ],
 };

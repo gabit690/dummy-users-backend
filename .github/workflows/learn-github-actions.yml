@@ -13,7 +13,7 @@ jobs:
       - name: Check branch name format
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          PATTERN="^(feature|feat|release|hotfix|bugfix|test|chore)\/[a-z0-9-]+$"
+          PATTERN="^(feature|feat|release|hotfix|bugfix|test|docs|chore)\/[a-z0-9-]+$"
 
           if [[ ! "$BRANCH_NAME" =~ $PATTERN ]]; then
             echo "❌ ERROR: La rama '$BRANCH_NAME' no sigue el estándar de nombres."

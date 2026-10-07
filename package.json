@@ -4,7 +4,7 @@
   "description": "A REST API providing dummy user data for demo applications",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/index.ts",
+    "dev": "node src/server.ts",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest --selectProjects unit",
     "test:int": "NODE_OPTIONS=--experimental-vm-modules jest --selectProjects integration",
@@ -25,6 +25,9 @@
   },
   "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45",
   "type": "module",
+  "imports": {
+    "#src/*": "./src/*.ts"
+  },
   "dependencies": {
     "express": "^5.2.1"
   },

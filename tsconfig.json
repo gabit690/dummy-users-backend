@@ -12,5 +12,6 @@
     "strictNullChecks": true,
     "noImplicitAny": true,
     "types": ["node", "jest"]
-  }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

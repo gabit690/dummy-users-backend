@@ -1,29 +1,29 @@
-import { createDefaultPreset } from "ts-jest";
+import { createDefaultEsmPreset } from "ts-jest";
 
-const tsJestTransformCfg = createDefaultPreset().transform;
+const esmPreset = createDefaultEsmPreset();
+
+/** @type {import("jest").Config} **/
+const base = {
+  ...esmPreset,
+  testEnvironment: "node",
+  moduleNameMapper: {
+    "^#src/(.*)$": "<rootDir>/src/$1",
+    "^(\\.{1,2}/.*)\\.[jt]s$": "$1",
+  },
+};
 
 /** @type {import("jest").Config} **/
 export default {
-  testEnvironment: "node",
-  transform: {
-    ...tsJestTransformCfg,
-  },
-  moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1",
-  },
   projects: [
     {
+      ...base,
       displayName: "unit",
-      preset: "ts-jest",
-      testEnvironment: "node",
-      testMatch: ["<rootDir>/src/**/*.test.ts"],
-      testPathIgnorePatterns: ["/node_modules/", "\\.int\\.test\\.ts$"],
+      testMatch: ["<rootDir>/tests/unit/**/*.test.ts"],
     },
     {
+      ...base,
       displayName: "integration",
-      preset: "ts-jest",
-      testEnvironment: "node",
-      testMatch: ["<rootDir>/src/**/*.int.test.ts"],
+      testMatch: ["<rootDir>/tests/integration/**/*.test.ts"],
     },
   ],
 };

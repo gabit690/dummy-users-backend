@@ -1,12 +1,23 @@
 import express from "express";
 import type { Database } from "./database/database.types.ts";
 import type { Country } from "./countries/countries.types.ts";
-import { getCountries } from "./countries/countries.repository.ts";
+import {
+  createCountry,
+  getCountries,
+} from "./countries/countries.repository.ts";
 
 export function createApp(db: Database) {
   const app = express();
+  app.use(express.json());
+
   app.get("/health", (req, res) => res.json({ status: "ok" }));
-  app.get("/countries", async (req, res) => {
+  app.post("/countries", (req, res) => {
+    const NEW_COUNTRY: Country = req.body as Country;
+    const countryCreated: Country = createCountry(db, NEW_COUNTRY);
+
+    res.status(201).json(countryCreated);
+  });
+  app.get("/countries", (req, res) => {
     const countries: ReadonlyArray<Country> = getCountries(db);
     return res.json(countries);
   });

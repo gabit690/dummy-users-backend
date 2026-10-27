@@ -6,6 +6,18 @@ import { insertCountries } from "#src/countries/countries.seed";
 import { createTestDb } from "../helpers/create-test-db.ts";
 
 describe("Countries API", () => {
+  describe("POST /countries", () => {
+    it("should create a new country", async () => {
+      const TEST_DATABASE = createTestDb();
+      const NEW_COUNTRY: Country = { code: "ARG", name: "Argentina" };
+      const response = await request(createApp(TEST_DATABASE))
+        .post("/countries")
+        .send(NEW_COUNTRY);
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual(NEW_COUNTRY);
+    });
+  });
+
   describe("GET /countries", () => {
     it("should return a list of countries", async () => {
       const TEST_DATABASE = createTestDb();

@@ -13,9 +13,9 @@ export function createApp(db: Database) {
   app.get("/health", (req, res) => res.json({ status: "ok" }));
   app.post("/countries", (req, res) => {
     const NEW_COUNTRY: Country = req.body as Country;
-    const countryCreated: Country = createCountry(db, NEW_COUNTRY);
+    createCountry(db, NEW_COUNTRY);
 
-    res.status(201).json(countryCreated);
+    res.status(201).json();
   });
   app.get("/countries", (req, res) => {
     const countries: ReadonlyArray<Country> = getCountries(db);

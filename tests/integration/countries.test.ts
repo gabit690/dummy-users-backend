@@ -9,12 +9,22 @@ describe("Countries API", () => {
   describe("POST /countries", () => {
     it("should create a new country", async () => {
       const TEST_DATABASE = createTestDb();
-      const NEW_COUNTRY: Country = { code: "ARG", name: "Argentina" };
+
       const response = await request(createApp(TEST_DATABASE))
         .post("/countries")
-        .send(NEW_COUNTRY);
+        .send({ code: "ARG", name: "Argentina" });
       expect(response.status).toBe(201);
-      expect(response.body).toEqual(NEW_COUNTRY);
+    });
+
+    it("should persist the new country", async () => {
+      const TEST_DATABASE = createTestDb();
+      const NEW_COUNTRY: Country = { code: "ARG", name: "Argentina" };
+      const app = createApp(TEST_DATABASE);
+
+      await request(app).post("/countries").send(NEW_COUNTRY);
+      const response = await request(app).get("/countries");
+
+      expect(response.body).toEqual([NEW_COUNTRY]);
     });
   });
 

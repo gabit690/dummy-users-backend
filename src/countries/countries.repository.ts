@@ -8,12 +8,8 @@ export function getCountries(database: Database): Array<Country> {
   return countries;
 }
 
-export function createCountry(database: Database, country: Country): Country {
-  const countryCreated = database
-    .prepare(
-      `INSERT INTO countries (code, name) VALUES (@code, @name) RETURNING *`,
-    )
-    .get(country) as Country;
-
-  return countryCreated;
+export function createCountry(database: Database, country: Country): void {
+  database
+    .prepare(`INSERT INTO countries (code, name) VALUES (@code, @name)`)
+    .run(country);
 }

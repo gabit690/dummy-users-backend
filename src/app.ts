@@ -4,6 +4,7 @@ import type { Country } from "./countries/countries.types.ts";
 import {
   createCountry,
   getCountries,
+  getCountryByCode,
 } from "./countries/countries.repository.ts";
 
 export function createApp(db: Database) {
@@ -20,6 +21,11 @@ export function createApp(db: Database) {
   app.get("/countries", (req, res) => {
     const countries: ReadonlyArray<Country> = getCountries(db);
     return res.json(countries);
+  });
+  app.get("/countries/:code", (req, res) => {
+    res.status(200);
+    const country = getCountryByCode(db, req.params.code);
+    return res.json(country);
   });
 
   return app;

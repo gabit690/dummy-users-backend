@@ -9,8 +9,8 @@ describe("Countries API", () => {
   describe("POST /countries", () => {
     it("should create a new country", async () => {
       const TEST_DATABASE = createTestDb();
-
-      const response = await request(createApp(TEST_DATABASE))
+      const app = createApp(TEST_DATABASE);
+      const response = await request(app)
         .post("/countries")
         .send({ code: "ARG", name: "Argentina" });
       expect(response.status).toBe(201);
@@ -35,12 +35,24 @@ describe("Countries API", () => {
         { code: "ARG", name: "Argentina" },
         { code: "SPA", name: "España" },
       ];
+      const app = createApp(TEST_DATABASE);
       insertCountries(TEST_DATABASE, TEST_COUNTRIES);
-      const response = await request(createApp(TEST_DATABASE)).get(
-        "/countries",
-      );
+      const response = await request(app).get("/countries");
       expect(response.status).toBe(200);
       expect(response.body).toEqual(TEST_COUNTRIES);
+    });
+  });
+
+  describe("GET /countries/:code", () => {
+    it("should return the countr with the given code", async () => {
+      const TEST_DATABASE = createTestDb();
+      const NEW_COUNTRY: Country = { code: "ARG", name: "Argentina" };
+      const app = createApp(TEST_DATABASE);
+
+      insertCountries(TEST_DATABASE, [NEW_COUNTRY]);
+      const response = await request(app).get(`/countries/${NEW_COUNTRY.code}`);
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(NEW_COUNTRY);
     });
   });
 });
